@@ -1,10 +1,10 @@
 var wrapper = document.getElementById("signature-pad");
 var clearButton = wrapper.querySelector("[data-action=clear]");
-var changeColorButton = wrapper.querySelector("[data-action=change-color]");
+//var changeColorButton = wrapper.querySelector("[data-action=change-color]");
 var undoButton = wrapper.querySelector("[data-action=undo]");
 var savePNGButton = wrapper.querySelector("[data-action=save-png]");
-var saveJPGButton = wrapper.querySelector("[data-action=save-jpg]");
-var saveSVGButton = wrapper.querySelector("[data-action=save-svg]");
+//var saveJPGButton = wrapper.querySelector("[data-action=save-jpg]");
+//var saveSVGButton = wrapper.querySelector("[data-action=save-svg]");
 var canvas = wrapper.querySelector("canvas");
 var signaturePad = new SignaturePad(canvas, {
   // It's Necessary to use an opaque color when saving image as JPEG;
@@ -39,7 +39,7 @@ function resizeCanvas() {
 window.onresize = resizeCanvas;
 resizeCanvas();
 
-function download(dataURL, filename) {
+/*function download(dataURL, filename) {
   if (navigator.userAgent.indexOf("Safari") > -1 && navigator.userAgent.indexOf("Chrome") === -1) {
     window.open(dataURL);
   } else {
@@ -55,6 +55,17 @@ function download(dataURL, filename) {
     a.click();
 
     window.URL.revokeObjectURL(url);
+  }
+}*/
+
+function copy(dataURL) {
+  if (navigator.userAgent.indexOf("Safari") > -1 && navigator.userAgent.indexOf("Chrome") === -1) {
+    window.open(dataURL);
+  } 
+  else {
+    var blob = dataURLToBlob(dataURL);
+    navigator.clipboard.write([new ClipboardItem({[blob.type]: blob})]);
+    signaturePad.clear();
   }
 }
 
@@ -88,25 +99,26 @@ undoButton.addEventListener("click", function (event) {
   }
 });
 
-changeColorButton.addEventListener("click", function (event) {
+/*changeColorButton.addEventListener("click", function (event) {
   var r = Math.round(Math.random() * 255);
   var g = Math.round(Math.random() * 255);
   var b = Math.round(Math.random() * 255);
   var color = "rgb(" + r + "," + g + "," + b +")";
 
   signaturePad.penColor = color;
-});
+});*/
 
 savePNGButton.addEventListener("click", function (event) {
   if (signaturePad.isEmpty()) {
     alert("Please provide a signature first.");
   } else {
     var dataURL = signaturePad.toDataURL();
-    download(dataURL, "signature.png");
+    //download(dataURL, "signature.png");
+    copy(dataURL);
   }
 });
 
-saveJPGButton.addEventListener("click", function (event) {
+/*saveJPGButton.addEventListener("click", function (event) {
   if (signaturePad.isEmpty()) {
     alert("Please provide a signature first.");
   } else {
@@ -122,4 +134,4 @@ saveSVGButton.addEventListener("click", function (event) {
     var dataURL = signaturePad.toDataURL('image/svg+xml');
     download(dataURL, "signature.svg");
   }
-});
+});*/
